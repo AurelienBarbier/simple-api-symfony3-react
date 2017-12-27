@@ -1,0 +1,39 @@
+{
+  "name": "simple-api",
+  "version": "1.0.0",
+  "description": "simple-api ==========",
+  "main": "index.js",
+  "directories": {
+    "test": "tests"
+  },
+  "dependencies": {
+    "babel-preset-react": "^6.24.1",
+    "node-sass": "^4.7.2",
+    "prop-types": "^15.6.0",
+    "react": "^16.2.0",
+    "react-dom": "^16.2.0",
+    "sass-loader": "^6.0.6",
+    "webpack-notifier": "^1.5.0"
+  },
+  "devDependencies": {
+    "@symfony/webpack-encore": "^0.17.0",
+    "@types/react": "^16.0.31",
+    "@types/react-dom": "^16.0.3",
+    "ts-loader": "^3.2.0",
+    "typescript": "^2.6.2"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AurelienBarbier/simple-api-symfony3-react.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/AurelienBarbier/simple-api-symfony3-react/issues"
+  },
+  "homepage": "https://github.com/AurelienBarbier/simple-api-symfony3-react#readme"
+}
