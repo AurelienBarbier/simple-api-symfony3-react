@@ -4,9 +4,12 @@
 
 import * as React from 'react'
 import {render} from 'react-dom'
+import ArticleStore from "./ArticleStore";
+import ArticleList from "./ArticleList";
+
 
 
 render(
-    <div> Salut les gens !!</div>,
-    document.getElementById('root')
+    <ArticleList/>,
+    document.getElementById('root') as Element
 )

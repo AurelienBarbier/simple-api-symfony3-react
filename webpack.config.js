@@ -13,7 +13,6 @@ Encore
 
   // allow sass/scss files to be processed
   .enableSassLoader()
-
   // Allow react
   .enableReactPreset()
   //And his bros
