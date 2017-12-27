@@ -52,11 +52,11 @@ class ArticleController extends Controller
     public function showAction(Article $article, Request $request)
     {
 
+        if($request->isXmlHttpRequest()) {
 
             $serializer = new JsonSerializer();
             return new JsonResponse($serializer->serialize( $article, 'json'));
 
-        if($request->isXmlHttpRequest()) {
         }else{
 
             $deleteForm = $this->createDeleteForm($article);

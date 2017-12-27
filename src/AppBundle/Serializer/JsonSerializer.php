@@ -10,9 +10,8 @@ namespace AppBundle\Serializer;
 
 
 use Symfony\Component\Serializer\Serializer;
-use Symfony\Component\Serializer\Encoder\XmlEncoder;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
-use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
+use Symfony\Component\Serializer\Normalizer\GetSetMethodNormalizer;
 
 class JsonSerializer extends Serializer
 {
@@ -20,9 +19,25 @@ class JsonSerializer extends Serializer
     public function __construct()
     {
 
-        $encoders = array(new XmlEncoder(), new JsonEncoder());
-        $normalizers = array(new ObjectNormalizer());
-        parent::__construct($normalizers, $encoders);
+        $encoders = array(new JsonEncoder());
+
+        $normalizer = new GetSetMethodNormalizer();
+
+        $callback = function ($dateTime) {
+            return $dateTime instanceof \DateTime
+                ? $dateTime->format(\DateTime::ISO8601)
+                : '';
+        };
+
+        $normalizer->setCallbacks(array('createdAt' => $callback,
+            'updatedAt' => $callback
+            ));
+
+        parent::__construct([$normalizer], $encoders);
+
+    }
+
+    private function dateFormat($dateTime){
 
     }
 
