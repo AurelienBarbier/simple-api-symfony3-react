@@ -3,9 +3,13 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\Article;
+use AppBundle\Serializer\JsonSerializer;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;use Symfony\Component\HttpFoundation\Request;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
+
 
 /**
  * Article controller.
@@ -19,15 +23,49 @@ class ArticleController extends Controller
      * @Route("/", name="homepage")
      * @Method("GET")
      */
-    public function indexAction()
+    public function indexAction(Request $request)
     {
         $em = $this->getDoctrine()->getManager();
 
         $articles = $em->getRepository('AppBundle:Article')->findAll();
 
-        return $this->render('article/index.html.twig', array(
-            'articles' => $articles,
-        ));
+
+        if($request->isXmlHttpRequest()) {
+
+            $serializer = new JsonSerializer();
+            return new JsonResponse($serializer->serialize( $articles, 'json'));
+
+        }else{
+
+            return $this->render('article/index.html.twig', array(
+                'articles' => $articles,
+            ));
+        }
+    }
+
+    /**
+     * Finds and displays a article entity.
+     *
+     * @Route("article/{id}", name="article_show")
+     * @Method("GET")
+     */
+    public function showAction(Article $article, Request $request)
+    {
+
+
+            $serializer = new JsonSerializer();
+            return new JsonResponse($serializer->serialize( $article, 'json'));
+
+        if($request->isXmlHttpRequest()) {
+        }else{
+
+            $deleteForm = $this->createDeleteForm($article);
+
+            return $this->render('article/show.html.twig', array(
+                'article' => $article,
+                'delete_form' => $deleteForm->createView(),
+            ));
+        }
     }
 
     /**
@@ -53,22 +91,6 @@ class ArticleController extends Controller
         return $this->render('article/new.html.twig', array(
             'article' => $article,
             'form' => $form->createView(),
-        ));
-    }
-
-    /**
-     * Finds and displays a article entity.
-     *
-     * @Route("article/{id}", name="article_show")
-     * @Method("GET")
-     */
-    public function showAction(Article $article)
-    {
-        $deleteForm = $this->createDeleteForm($article);
-
-        return $this->render('article/show.html.twig', array(
-            'article' => $article,
-            'delete_form' => $deleteForm->createView(),
         ));
     }
 
