@@ -19,6 +19,7 @@
     "@symfony/webpack-encore": "^0.17.0",
     "@types/react": "^16.0.31",
     "@types/react-dom": "^16.0.3",
+    "reduce": "^1.0.1",
     "ts-loader": "^3.2.0",
     "typescript": "^2.6.2"
   },
