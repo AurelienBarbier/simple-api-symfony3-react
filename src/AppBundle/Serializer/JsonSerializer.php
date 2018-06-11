@@ -28,9 +28,10 @@ class JsonSerializer extends Serializer
                 : '';
         };
 
-        $normalizer->setCallbacks(array('createdAt' => $callback,
+        $normalizer->setCallbacks([
+            'createdAt' => $callback,
             'updatedAt' => $callback
-            ));
+            ]);
 
         parent::__construct([$normalizer], $encoders);
     }

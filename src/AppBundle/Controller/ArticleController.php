@@ -16,20 +16,32 @@ use Symfony\Component\HttpFoundation\Request;
  */
 class ArticleController extends Controller
 {
-    /**
-     * Lists all article entities.
-     *
-     * @Route("/", name="homepage")
-     * @Method("GET")
-     */
-    public function indexAction(Request $request, $_format)
+        /**
+         * Lists all article entities.
+         *
+         * @Route("/", name="homepage")
+         * @Method("GET")
+         */
+    public function indexAction(Request $request)
+    {
+        return $this->render('base.html.twig');
+    }
+
+        
+        /**
+         * Lists all article entities.
+         *
+         * @Route("/articles", name="articles_list")
+         * @Method("GET")
+         */
+    public function listsAction(Request $request)
     {
         $em = $this->getDoctrine()->getManager();
 
         $articles = $em->getRepository('AppBundle:Article')->findAll();
 
         $serializer = new JsonSerializer();
-        return new JsonResponse($serializer->serialize($articles, 'json'));
+        return JsonResponse::fromJsonString($serializer->serialize($articles, 'json'));
     }
 
     /**
@@ -40,69 +52,50 @@ class ArticleController extends Controller
      */
     public function showAction(Article $article, Request $request)
     {
-
-        if ($request->isXmlHttpRequest()) {
             $serializer = new JsonSerializer();
-            return new JsonResponse($serializer->serialize($article, 'json'));
-        } else {
-            $deleteForm = $this->createDeleteForm($article);
-
-            return $this->render('article/show.html.twig', array(
-                'article' => $article,
-                'delete_form' => $deleteForm->createView(),
-            ));
-        }
+            return JsonResponse::fromJsonString($serializer->serialize($article, 'json'));
     }
 
     /**
      * Creates a new article entity.
      *
      * @Route("article/new", name="article_new")
-     * @Method({"GET", "POST"})
+     * @Method({"POST"})
      */
     public function newAction(Request $request)
     {
         $article = new Article();
         $form = $this->createForm('AppBundle\Form\ArticleType', $article);
         $form->handleRequest($request);
+        $status = 200;
 
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
             $em->persist($article);
             $em->flush();
 
-            return $this->redirectToRoute('article_show', array('id' => $article->getId()));
+            $status = 201;
+            $response = array($serializer->serialize($article, 'json'));
         }
 
-        return $this->render('article/new.html.twig', array(
-            'article' => $article,
-            'form' => $form->createView(),
-        ));
+        return JsonResponse::fromJsonString($serializer->serialize($response, 'json'), $status);
     }
 
     /**
      * Displays a form to edit an existing article entity.
      *
      * @Route("article/{id}/edit", name="article_edit")
-     * @Method({"GET", "POST"})
+     * @Method({"PATCH"})
      */
     public function editAction(Request $request, Article $article)
     {
-        $deleteForm = $this->createDeleteForm($article);
         $editForm = $this->createForm('AppBundle\Form\ArticleType', $article);
         $editForm->handleRequest($request);
 
         if ($editForm->isSubmitted() && $editForm->isValid()) {
             $this->getDoctrine()->getManager()->flush();
-
-            return $this->redirectToRoute('article_edit', array('id' => $article->getId()));
         }
-
-        return $this->render('article/edit.html.twig', array(
-            'article' => $article,
-            'edit_form' => $editForm->createView(),
-            'delete_form' => $deleteForm->createView(),
-        ));
+        return JsonResponse::fromJsonString($serializer->serialize($response, 'json'));
     }
 
     /**

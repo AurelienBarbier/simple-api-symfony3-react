@@ -18,22 +18,35 @@ export default class ArticleList extends React.PureComponent<ArticleListProps, A
 
     constructor(props:ArticleListProps){
         super(props);
-
-        this.store.addArticle(5, 'plip', 'testosnjvsjnvdv');
-        this.store.addArticle(56, 'plipecs', 'mvor testosnjvsjnvdv');
-        this.store.addArticle(32, 'plrrrip', 'testr ros snjvs jnvdv');
-
         this.state = {
-            articles: this.store.articles,
+            articles: [],
         }
+    }
+
+    componentDidMount() {
+
+      let result = fetch('http://localhost:8000/articles')
+        .then(response =>{
+          if (response.ok) {
+            response.json().then(data => {
+              this.setState({ articles: data });
+            });
+          }else{
+            console.warn('Network response was not ok.');
+          }
+      return result;
+    })
+    .catch(err => console.log(err));
     }
 
     render () {
         let { articles } = this.state;
         return <div className="container">
-            { articles.map( article => {
-                return  <ArticleItem article={article } key={ article.id } />
-            })}
+                <div className="row">
+                  { articles.map( article => {
+                      return  <ArticleItem article={article } key={ article.id } />
+                  })}
+            </div>
         </div>
     }
 }

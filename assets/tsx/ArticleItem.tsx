@@ -16,7 +16,7 @@ export default class ArticleItem extends React.Component<Props, State> {
     render () {
         let { article } = this.props;
         console.log(article);
-        return <div className="card">
+        return <div className="card col-12 col-md-6">
             <div className="card-content">
                 <div className="media">
                     <div className="media-left">
