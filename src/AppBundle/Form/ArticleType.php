@@ -13,7 +13,13 @@ class ArticleType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('title')->add('abstract')->add('content')->add('createdAt')->add('updatedAt')->add('published')->add('thumb');
+        $builder->add('title')
+                ->add('abstract')
+                ->add('content')
+                ->add('createdAt')
+                ->add('updatedAt')
+                ->add('published')
+                ->add('thumb');
     }/**
      * {@inheritdoc}
      */
@@ -31,6 +37,4 @@ class ArticleType extends AbstractType
     {
         return 'appbundle_article';
     }
-
-
 }

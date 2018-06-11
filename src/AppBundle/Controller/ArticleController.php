@@ -10,7 +10,6 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
-
 /**
  * Article controller.
  *
@@ -23,24 +22,14 @@ class ArticleController extends Controller
      * @Route("/", name="homepage")
      * @Method("GET")
      */
-    public function indexAction(Request $request)
+    public function indexAction(Request $request, $_format)
     {
         $em = $this->getDoctrine()->getManager();
 
         $articles = $em->getRepository('AppBundle:Article')->findAll();
 
-
-        if($request->isXmlHttpRequest()) {
-
-            $serializer = new JsonSerializer();
-            return new JsonResponse($serializer->serialize( $articles, 'json'));
-
-        }else{
-
-            return $this->render('article/index.html.twig', array(
-                'articles' => $articles,
-            ));
-        }
+        $serializer = new JsonSerializer();
+        return new JsonResponse($serializer->serialize($articles, 'json'));
     }
 
     /**
@@ -52,13 +41,10 @@ class ArticleController extends Controller
     public function showAction(Article $article, Request $request)
     {
 
-        if($request->isXmlHttpRequest()) {
-
+        if ($request->isXmlHttpRequest()) {
             $serializer = new JsonSerializer();
-            return new JsonResponse($serializer->serialize( $article, 'json'));
-
-        }else{
-
+            return new JsonResponse($serializer->serialize($article, 'json'));
+        } else {
             $deleteForm = $this->createDeleteForm($article);
 
             return $this->render('article/show.html.twig', array(

@@ -8,7 +8,6 @@
 
 namespace AppBundle\Serializer;
 
-
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Normalizer\GetSetMethodNormalizer;
@@ -34,11 +33,9 @@ class JsonSerializer extends Serializer
             ));
 
         parent::__construct([$normalizer], $encoders);
-
     }
 
-    private function dateFormat($dateTime){
-
+    private function dateFormat($dateTime)
+    {
     }
-
 }
